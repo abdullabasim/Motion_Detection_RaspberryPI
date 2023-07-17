@@ -22,17 +22,17 @@ def upload_pictures(image_name):
     blob = bucket.blob(image_name)
 
     # Upload the image file to the bucket
-    blob.upload_from_filename("/home/pi/motion_detection_images/" + image_name + ".jpg")
-    
+    blob.upload_from_filename(f"/home/pi/motion_detection_images/{image_name}.jpg")
+
     # Create a Firebase application instance
     firebases = firebase.FirebaseApplication('YOUR_FIREBASE_URL', None)
 
     # Post the image name to the Firebase database
-    firebases.post('/data', image_name)
-    
+    firebases.post('/images', image_name)
+
     # Remove the uploaded image file from the local directory
-    os.remove("/home/pi/motion_detection_images/" + image_name + ".jpg")
-    
+    os.remove(f"/home/pi/motion_detection_images/{image_name}.jpg")
+
     print("Done!!")
 
 try:
@@ -47,11 +47,11 @@ try:
             image_name2 = str(uuid.uuid4())
 
             # Capture the first image
-            os.system("raspistill --width 800 --height 600 --quality 100 -o " + image_name1 + ".jpg")
+            os.system(f"raspistill --width 800 --height 600 --quality 100 -o {image_name1}.jpg")
             upload_pictures(image_name1)
 
             # Capture the second image
-            os.system("raspistill --width 800 --height 600 --quality 100 -o " + image_name2 + ".jpg")
+            os.system(f"raspistill --width 800 --height 600 --quality 100 -o {image_name2}.jpg")
             upload_pictures(image_name2)
 
             # Send SMS using Twilio
